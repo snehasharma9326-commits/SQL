@@ -1,0 +1,190 @@
+#project smartchart Retail sales Analysis
+#Name: Shalini sharma
+#course : Btech Cse(D.A)
+
+#Create Database
+
+CREATE DATABASE smartmart_db;
+
+USE smartmart_db;
+
+
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(50),
+    city VARCHAR(50),
+    age INT
+);
+
+
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100),
+    category VARCHAR(50),
+    price DECIMAL(10,2)
+);
+
+CREATE TABLE sales (
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    quantity INT,
+    order_date DATE
+);
+
+
+INSERT INTO customers VALUES
+(1,'Rahul Sharma','Delhi',28),
+(2,'Priya Verma','Mumbai',32),
+(3,'Amit Singh','Bangalore',25),
+(4,'Neha Kapoor','Delhi',29),
+(5,'Rohit Mehta','Pune',35),
+(6,'Anjali Gupta','Mumbai',27),
+(7,'Karan Patel','Ahmedabad',31),
+(8,'Sneha Reddy','Hyderabad',26);
+
+
+INSERT INTO products VALUES
+(101,'Laptop','Electronics',80000),
+(102,'Smartphone','Electronics',40000),
+(103,'Headphones','Electronics',2000),
+(104,'T-Shirt','Clothing',800),
+(105,'Jeans','Clothing',2000),
+(106,'Microwave','Home Appliances',7000),
+(107,'Refrigerator','Home Appliances',30000),
+(108,'Air Conditioner','Home Appliances',45000);
+
+
+
+INSERT INTO sales VALUES
+(1001,1,101,1,'2024-01-10'),
+(1002,2,102,2,'2024-01-11'),
+(1003,3,104,3,'2024-01-12'),
+(1004,4,105,2,'2024-01-12'),
+(1005,5,103,4,'2024-01-13'),
+(1006,6,106,1,'2024-01-14'),
+(1007,7,108,1,'2024-01-14'),
+(1008,8,102,1,'2024-01-15'),
+(1009,1,103,2,'2024-01-16'),
+(1010,2,104,5,'2024-01-17'),
+(1011,3,105,1,'2024-01-18'),
+(1012,4,101,1,'2024-01-19');
+
+ #Q1 display all customers
+SELECT * FROM customers;
+
+-- Q2 show  only customer name and city
+SELECT customer_name, city FROM customers;
+
+-- Q3Display all products in the Electronics category.
+SELECT * FROM products WHERE category = 'Electronics';
+
+-- Q4Show products with price greater than 10,000.
+SELECT * FROM products WHERE price > 10000;
+
+-- Q5Display unique categories.
+SELECT DISTINCT category FROM products;
+
+-- Q6Show customers who live in Delhi.
+SELECT * FROM customers WHERE city = 'Delhi';
+
+-- Q7Show customers with age greater than 30.
+SELECT * FROM customers WHERE age > 30;
+
+-- Q8Display products with price between 2000 and 50000.
+SELECT * FROM products WHERE price BETWEEN 2000 AND 50000;
+
+-- Q9Find orders placed after 2024-01-12.
+SELECT * FROM sales WHERE order_date > '2024-01-12';
+
+-- Q10Display sales where quantity > 2.
+SELECT * FROM sales WHERE quantity > 2;
+
+-- Q11Display products sorted by price (highest first).
+SELECT * FROM products ORDER BY price DESC;
+
+-- Q12Show top 3 most expensive products.
+SELECT * FROM products ORDER BY price DESC LIMIT 3;
+
+-- Q13Display customers sorted by age ascending.
+SELECT * FROM customers ORDER BY age;
+
+-- Q14Show latest 5 orders.
+SELECT * FROM sales ORDER BY order_date DESC LIMIT 5;
+
+-- Q15Find customers where city IS NULL
+UPDATE customers SET city = NULL WHERE customer_id = 8;
+
+-- Q16Find customers where city IS NOT NULL
+SELECT * FROM customers WHERE city IS NULL;
+
+-- Q17Find customers where city IS NOT NULL
+SELECT * FROM customers WHERE city IS NOT NULL;
+
+-- Q18Find total number of customers.
+SELECT COUNT(*) FROM customers;
+
+-- Q19Find average product price.
+SELECT AVG(price) FROM products;
+
+-- Q20Find maximum product price.
+SELECT MAX(price) FROM products;
+
+-- Q21Find total quantity sold.
+SELECT SUM(quantity) FROM sales;
+
+-- Q22Find number of products in each category.
+SELECT category, COUNT(*) FROM products GROUP BY category;
+
+-- Q23Find total sales quantity by product_id.
+SELECT product_id, SUM(quantity) FROM sales GROUP BY product_id;
+
+-- Q24Find average price by category.
+SELECT category, AVG(price) FROM products GROUP BY category;
+
+-- Q25Find categories where average price > 10,000.
+SELECT category, AVG(price)
+FROM products
+GROUP BY category
+HAVING AVG(price) > 10000;
+
+-- Q26Find products where total quantity sold > 3.
+SELECT product_id, SUM(quantity)
+FROM sales
+GROUP BY product_id
+HAVING SUM(quantity) > 3;
+
+-- Q27Find categories having more than 2 products.
+SELECT category, COUNT(*)
+FROM products
+GROUP BY category
+HAVING COUNT(*) > 2;
+
+-- Q28Which category generates the most sales volume?
+SELECT p.category, SUM(s.quantity)
+FROM sales s
+JOIN products p ON s.product_id = p.product_id
+GROUP BY p.category
+ORDER BY SUM(s.quantity) DESC
+LIMIT 1;
+
+-- Q29Which product sells the most units?
+SELECT p.product_name, SUM(s.quantity)
+FROM sales s
+JOIN products p ON s.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY SUM(s.quantity) DESC
+LIMIT 1;
+
+-- Q30Which city has the most customers?
+SELECT city, COUNT(*)
+FROM customers
+GROUP BY city
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+-- Q31Which product has the highest price?
+SELECT product_name, price
+FROM products
+order by price DESC
+Limit 1;
